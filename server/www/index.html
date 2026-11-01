@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Копатель Онлайн 2014</title>
+<style>
+  html, body { margin: 0; height: 100%; background: #3e4757; color: #d7dee5; font: 15px/1.5 Tahoma, Arial, sans-serif; overflow: hidden;
+               -moz-user-select: none; cursor: default; }
+  /* Firefox 51: no `inset` shorthand. */
+  #game { position: absolute; top: 0; left: 0; right: 0; bottom: 0; }
+  #help { display: none; max-width: 720px; margin: 40px auto; padding: 24px; border: 1px solid #5b6b7d; border-radius: 12px; background: #2f3744; }
+  #help a { color: #ffb35c; }
+</style>
+<script>
+  function player() { return document.getElementById("unityPlayer"); }
+  function send(obj, method, value) { var p = player(); if (p) p.SendMessage(obj, method, value); }
+
+  // App.Start calls this through Application.ExternalCall. The patched client runs as the
+  // WEBSITE platform, so ApiInitialized opens the game's own login/registration screen.
+  function SendSettingsToPlayer() {
+    setTimeout(function () {
+      send("VKAPI", "SetLocalize", "RU");
+      send("VKAPI", "SetUrl", location.toString());
+      send("VKAPI", "ApiInitialized", 1);
+    }, 0);
+  }
+
+  // The launcher's Firefox (kopatel.cfg) listens for these: full screen that Esc does not leave,
+  // and links opened in the system browser rather than in the game window.
+  function chromeEvent(name, detail) {
+    document.dispatchEvent(new CustomEvent(name, { bubbles: true, detail: detail }));
+  }
+  function ToggleFullScreen() {
+    if (window.kopatelToggleFullScreen) window.kopatelToggleFullScreen();
+    else chromeEvent("KopatelToggleFullScreen", null);
+  }
+  function OpenUrl(url) {
+    if (window.kopatelOpenUrl) window.kopatelOpenUrl(String(url));
+    else chromeEvent("KopatelOpenUrl", String(url));
+  }
+  document.addEventListener("contextmenu", function (e) { e.preventDefault(); });
+  function noShop() { alert("На этом сервере нет оплаты: монеты и кристаллы выдаются бесплатно."); }
+  var Pay = noShop, PayCrys = noShop, ByCryss = noShop, ByUnban = noShop, WebCallPayStation = noShop;
+</script>
+</head>
+<body>
+<div id="game"></div>
+<div id="help">
+  <h2>Нужен Unity Web Player</h2>
+  <p>Игра 2014 года работает только в браузере с плагином Unity Web Player. Проще всего запускать её
+     через лаунчер <b>KopatelOnline2014.exe</b>: в нём уже есть Firefox 51 и плагин.</p>
+</div>
+<script>
+  var hasPlugin = false;
+  try { hasPlugin = !!navigator.mimeTypes["application/vnd.unity"]; } catch (e) {}
+  if (hasPlugin) {
+    document.getElementById("game").innerHTML =
+      '<embed id="unityPlayer" src="Digger2014.unity3d" width="100%" height="100%" type="application/vnd.unity"' +
+      ' backgroundcolor="3e4757" bordercolor="3e4757" textcolor="FFFFFF" disablecontextmenu="true">';
+  } else {
+    document.getElementById("help").style.display = "block";
+  }
+</script>
+</body>
+</html>

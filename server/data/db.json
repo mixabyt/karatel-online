@@ -1,0 +1,51 @@
+{
+ "next_id": 100002,
+ "next_map_id": 2,
+ "accounts": {
+  "poshta@gmail.com": {
+   "id": "100001",
+   "password": "123",
+   "auth_key": "4f750ae92c40217eecbe67fa4430e336"
+  }
+ },
+ "profiles": {
+  "100001": {
+   "email": "poshta@gmail.com",
+   "name": "сіоніст",
+   "coins": 20000,
+   "crystals": 1972,
+   "destroy": 1,
+   "skin": 0,
+   "experience": 0,
+   "inv": {
+    "6": [
+     5,
+     ""
+    ],
+    "33": [
+     0,
+     ""
+    ],
+    "39": [
+     1,
+     "2200-01-01 00:00"
+    ],
+    "148": [
+     0,
+     ""
+    ],
+    "78": [
+     1,
+     ""
+    ]
+   },
+   "slots": {
+    "1": {
+     "saved": true
+    }
+   },
+   "votes": {}
+  }
+ },
+ "maps": {}
+}

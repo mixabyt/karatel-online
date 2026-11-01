@@ -1,0 +1,19 @@
+# Copy the server/ folder to /opt/kopatel2014, then:
+#   sudo cp kopatel2014.service /etc/systemd/system/ && sudo systemctl enable --now kopatel2014
+#   sudo ufw allow 8080,843,5055,5056/tcp
+[Unit]
+Description=Kopatel Online 2014 server
+After=network.target
+
+[Service]
+WorkingDirectory=/opt/kopatel2014
+# Port 843 is privileged on Linux.
+AmbientCapabilities=CAP_NET_BIND_SERVICE
+DynamicUser=yes
+StateDirectory=kopatel2014
+Environment=PYTHONUNBUFFERED=1
+ExecStart=/usr/bin/python3 /opt/kopatel2014/server.py --data /var/lib/kopatel2014
+Restart=on-failure
+
+[Install]
+WantedBy=multi-user.target
