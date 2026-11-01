@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ru">
+<head>
+<meta charset="utf-8">
+<title>Копатель Онлайн 2012 — локальный сервер</title>
+<style>
+  html, body { margin: 0; height: 100%; overflow: hidden; background: #10161d; color: #d7dee5; font: 15px/1.5 Tahoma, Arial, sans-serif; }
+  header { display: flex; align-items: center; justify-content: space-between; padding: 10px 20px; background: #1a232c; }
+  header b { font-size: 20px; color: #ffb35c; }
+  header button { margin-left: 8px; padding: 7px 14px; border: 0; border-radius: 6px; background: #2c3a47; color: #fff; cursor: pointer; }
+  #game { position: absolute; top: 56px; left: 0; right: 0; bottom: 0; }
+  /* An inline embed leaves a line's descender below it, which made the page scroll. */
+  #game embed { display: block; }
+  #help { display: none; max-width: 720px; margin: 40px auto; padding: 24px; border: 1px solid #3b4b59; border-radius: 12px; background: #17202a; }
+  #help a { color: #ffb35c; }
+</style>
+<script>
+  // Called by the game through Application.ExternalCall.
+  function OpenUrl(url) { window.open(url, "_blank"); }
+  function noShop() { alert("На локальном сервере нет оплаты: кристаллы выдаются бесплатно в игровом магазине."); }
+  var PayGold = noShop, PayCrys = noShop, Pay = noShop, ByCryss6 = noShop, ByCryss15 = noShop,
+      ByCryss30 = noShop, ByCryss60 = noShop, ByCryss120 = noShop;
+  function InviteFriend() {}
+  function SendSettingsToPlayer() {}
+</script>
+</head>
+<body>
+<header>
+  <b>Копатель Онлайн 2012</b>
+  <span><button onclick="location.reload()">Перезапустить</button><button id="fullscreen" onclick="fullscreen()">На весь экран</button></span>
+</header>
+<div id="game"></div>
+<div id="help">
+  <h2>Нужен Unity Web Player</h2>
+  <p>Игра 2012 года работает только в браузере с плагином Unity Web Player:</p>
+  <ol>
+    <li>Установите <a href="https://ftp.mozilla.org/pub/firefox/releases/51.0.1/win32/ru/Firefox%20Setup%2051.0.1.exe">Firefox 51 (32-bit)</a> и отключите в нём автообновление.</li>
+    <li>Установите <a href="https://webplayer.unity3d.com/download_webplayer-3.x/UnityWebPlayerFull.exe">Unity Web Player</a>.</li>
+    <li>Перезапустите Firefox, откройте эту страницу и разрешите запуск плагина.</li>
+  </ol>
+</div>
+<script>
+  // In the launcher, Firefox handles these events itself (launcher/mozilla.cfg) and answers by marking
+  // <html> with data-kop-launcher during dispatchEvent.
+  function launcherEvent(name) {
+    var ev = document.createEvent("Events");
+    ev.initEvent(name, true, true);
+    document.dispatchEvent(ev);
+    return document.documentElement.hasAttribute("data-kop-launcher");
+  }
+  // The launcher uses the browser's own full screen (F11 mode), which Esc - the game's menu key - does
+  // not end. A plain browser only has page full screen, which ends on every Esc.
+  function fullscreen() {
+    if (launcherEvent("KopToggleFullscreen")) return;
+    var g = document.getElementById("game");
+    (g.requestFullscreen || g.mozRequestFullScreen || g.webkitRequestFullscreen).call(g);
+  }
+  // Called by the game at start (App.Start): F12 then goes through fullscreen() instead of the game's
+  // own full screen, which the Web Player also ends on Esc.
+  // Answered later: a SendMessage made while the game is still inside its ExternalCall is lost.
+  function KopHello(app) {
+    if (launcherEvent("KopFullscreenProbe"))
+      setTimeout(function () { document.getElementById("unity").SendMessage(app, "Kop_SetBrowserFullscreen", "1"); }, 0);
+  }
+  // The header stays in full screen: its button is the way out (F11 never reaches Firefox while the
+  // game has the keyboard, and F12 only works once the game has started).
+  window.addEventListener("resize", function () {
+    document.getElementById("fullscreen").textContent = window.fullScreen ? "Обычный режим" : "На весь экран";
+  });
+  var hasPlugin = false;
+  try { hasPlugin = !!navigator.mimeTypes["application/vnd.unity"]; } catch (e) {}
+  if (hasPlugin) {
+    document.getElementById("game").innerHTML =
+      '<embed id="unity" src="Digger2012.unity3d" width="100%" height="100%" type="application/vnd.unity"' +
+      ' backgroundcolor="000000" bordercolor="000000" textcolor="FFFFFF" disablecontextmenu="true">';
+  } else {
+    document.getElementById("help").style.display = "block";
+  }
+</script>
+</body>
+</html>

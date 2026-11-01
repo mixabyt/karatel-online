@@ -1,0 +1,6 @@
+While decompiling Assembly-CSharp.dll:
+1 error(s) occurred; the affected code was replaced by the error text in the output.
+Please report them at https://github.com/icsharpcode/ILSpy/issues/new:
+  Error decompiling @0600021A MainMenu.LoadNewsBlock: Invalid method header: 0x13 0x16
+You are not using the latest version of the tool, please update.
+Latest version is '11.2.0.10050' (yours is '11.1.0.9782')

@@ -1,0 +1,21 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <PropertyGroup>
+    <OutputType>Exe</OutputType>
+    <TargetFramework>net9.0</TargetFramework>
+    <Nullable>disable</Nullable>
+    <ImplicitUsings>enable</ImplicitUsings>
+    <NoWarn>SYSLIB0041;SYSLIB0022</NoWarn>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!-- Fixes/ is compiled by the patcher against the game's own assemblies; ildump/ holds dev scripts. -->
+    <Compile Remove="Fixes/**;ildump/**;bin/**;obj/**" />
+    <None Include="Fixes/KopFix.cs" CopyToOutputDirectory="PreserveNewest" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <PackageReference Include="Mono.Cecil" Version="0.11.6" />
+  </ItemGroup>
+
+</Project>

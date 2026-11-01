@@ -1,0 +1,2 @@
+/* The game window shows only the page: no tabs, address bar, bookmarks or menu. */
+#TabsToolbar, #nav-bar, #PersonalToolbar, #toolbar-menubar { visibility: collapse !important; }

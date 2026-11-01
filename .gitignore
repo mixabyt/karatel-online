@@ -1,0 +1,15 @@
+# Build output and intermediates
+build/
+launcher/dist/
+server/patcher/bin/
+server/patcher/obj/
+__pycache__/
+
+# Downloads from the fan site; only the 2012 client is kept, it is the input of build_client.py
+dl/*
+!dl/client2012.unity3d
+
+# Local accounts and maps created by the running server
+server/data/db.json
+server/data/worlds/
+server/data/backups/
